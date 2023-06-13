@@ -1,9 +1,9 @@
 // Import dependencies
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
 import Webcam from "react-webcam";
 import "./App.css";
-import { nextFrame } from "@tensorflow/tfjs";
+// import { nextFrame } from "@tensorflow/tfjs";
 // 2. TODO - Import drawing utility here
 import {drawRect} from "./utilities"; 
 
@@ -14,7 +14,7 @@ function App() {
   // Main function
   const runCoco = async () => {
     // 3. TODO - Load network 
-    const net = await tf.loadGraphModel('https://livelong.s3.au-syd.cloud-object-storage.appdomain.cloud/model.json')
+    const net = await tf.loadGraphModel('https://sign-language-detector-sr.s3.us-east.cloud-object-storage.appdomain.cloud/model.json')
     
     // Loop and detect hands
     setInterval(() => {
@@ -49,9 +49,9 @@ function App() {
       const expanded = casted.expandDims(0)
       const obj = await net.executeAsync(expanded)
       
-      const boxes = await obj[4].array()
-      const classes = await obj[5].array()
-      const scores = await obj[6].array()
+      const boxes = await obj[2].array()
+      const classes = await obj[3].array()
+      const scores = await obj[7].array()
     
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
@@ -69,7 +69,7 @@ function App() {
     }
   };
 
-  useEffect(()=>{runCoco()},[]);
+  useEffect(()=>{runCoco()});
 
   return (
     <div className="App">
